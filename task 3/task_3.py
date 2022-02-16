@@ -1,14 +1,17 @@
 '''Lab 2.3'''
+
 from geopy.geocoders import Nominatim
 from folium import FeatureGroup, Map, Marker, Icon, LayerControl
 from flask import Flask, render_template, url_for, request
 import requests
 
+
 def get_info(user_name):
     '''
     Gets info about the user using twitter API and my bearer key
     '''
-    key = 'AAAAAAAAAAAAAAAAAAAAAHD2ZAEAAAAAN9Y2q7ytC8NoBO%2BfGm7jje6ACS0%3DyYnsbmV1kCC3dLX34tymK4aObVK3mCrIurxcUtZgOrVx4T4drx'
+    key = 'AAAAAAAAAAAAAAAAAAAAAHD2ZAEAAAAAN9Y2q7ytC8NoBO%2BfGm7\
+jje6ACS0%3DyYnsbmV1kCC3dLX34tymK4aObVK3mCrIurxcUtZgOrVx4T4drx'
     headers = {'Authorization': f'Bearer {key}'}
     params = {'screen_name': user_name, 'count': 200}
 
@@ -17,9 +20,10 @@ def get_info(user_name):
                             params=params)
     return response.json()
 
+
 def read_file(text_json):
     '''
-    Reads a text returned from twitter api and returns a 
+    Reads a text returned from twitter api and returns a
     dictionary with all necessary information
     '''
     temporary_dict = {}
@@ -35,6 +39,7 @@ def read_file(text_json):
         all_info.append(temporary_dict)
         temporary_dict = {}
     return all_info
+
 
 def find_location(all_info):
     '''
@@ -57,33 +62,40 @@ def find_location(all_info):
                         loc_copy = loc
                         indexx = loc_copy.find(',')
                         loc_copy = loc_copy[(indexx + 2):]
-                        location1 = Nominatim(user_agent='app_name').geocode(loc_copy)
+                        location1 = Nominatim(
+                                    user_agent='app_name').geocode(loc_copy)
                         if location1 is not None:
-                            coord_2 = (location1.lattitude, location1.longtitude)
-                            copy_to_add_loc[indexx].setdefault('coordinates', coord_2)
+                            coord_2 = (location1.lattitude,
+                                       location1.longtitude)
+                            copy_to_add_loc[indexx].setdefault(
+                                        'coordinates', coord_2)
                             flag = False
         except:
             continue
     flag = True
     return copy_to_add_loc
 
+
 def make_map(copy_to_add_loc):
     '''
     Creates a map with final markers
     '''
     main_map = Map(location=[20, 0], zoom_start=2, control_scale=True)
-    markers_gr = FeatureGroup(name = 'Group')
+    markers_gr = FeatureGroup(name='Group')
 
     main_map.add_child(markers_gr)
     for one_dict in range(len(copy_to_add_loc)):
         try:
-            lattitude, longtitude = copy_to_add_loc[one_dict].get('coordinates')
+            lattitude, longtitude =
+            copy_to_add_loc[one_dict].get('coordinates')
             name = copy_to_add_loc[one_dict].get('user')
-            markers_gr.add_child(Marker(location = [lattitude, longtitude], popup = name, icon = Icon(color = 'darkpurple')))
+            markers_gr.add_child(Marker(location=[lattitude, longtitude],
+                popup=name, icon=Icon(color='darkpurple')))
         except TypeError:
             continue
     main_map.add_child(LayerControl())
     main_map.save('templates/mapp.html')
+
 
 def all_func(user_name):
     '''
@@ -100,16 +112,23 @@ app = Flask(__name__)
 
 @app.route('/')
 def display_the_main_page():
+    '''
+    The function makes a site
+    '''
     return render_template('index.html')
 
 
-@app.route('/result_version_alpha_0.2', methods = ['POST'])
+@app.route('/result_version_alpha_0.2', methods=['POST'])
 def eenter():
+    '''
+    The function gets user name and makes a map
+    '''
     user_name = request.form['username']
     all_func(user_name)
     return render_template('mapp.html')
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 @app.after_request
 def add_header(response):
