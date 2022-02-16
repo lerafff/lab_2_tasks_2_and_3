@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: #faedcd;
+            font-family: Arial;
+        }
+        heading{
+            color: #7f5539;
+            background-color: #fefae0;
+            font-size: 40px;
+            text-align: center;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+        input{
+            width: 300px;
+            height: 40px;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        button{
+            width: 110px;
+            height: 55px;
+            color: #444;
+            background-color: #ffe8d6;
+            border: 4px, solid, #fff;
+            border-radius: 15px;
+            font-size: 15px;
+            color: #7f5539;
+        }
+
+    </style>
+</head>
+<body>
+    <heading>
+        <div>
+    <h1>Twitter search</h1>
+    <form name="test", action="{{ url_for('eenter') }}", method="post">
+        <input type="text" name="username", placeholder="@Username">
+        <button><b>Search</b></button>
+    </form></div>
+    </heading>
+
+</body>
+</html>
