@@ -86,8 +86,7 @@ def make_map(copy_to_add_loc):
     main_map.add_child(markers_gr)
     for one_dict in range(len(copy_to_add_loc)):
         try:
-            lattitude, longtitude =
-            copy_to_add_loc[one_dict].get('coordinates')
+            lattitude, longtitude = copy_to_add_loc[one_dict].get('coordinates')
             name = copy_to_add_loc[one_dict].get('user')
             markers_gr.add_child(Marker(location=[lattitude, longtitude],
                 popup=name, icon=Icon(color='darkpurple')))
